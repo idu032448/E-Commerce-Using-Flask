@@ -3,6 +3,9 @@ from shop import db, app, photos
 from .models import Brand, Category, Product
 from .forms import AddProducts
 import secrets, os
+from smart_contracts_fn import get_balance
+from ..customers.models import RegisterModel
+
 
 def get_all_brands():
     brands = Brand.query.join(Product, (Brand.id==Product.brand_id)).all()
@@ -15,7 +18,12 @@ def get_all_categories():
 def home():
     page = request.args.get('page', 1, type=int)
     products = Product.query.filter(Product.stock > 0).paginate(page=page, per_page=4)
-    return render_template('products/index.html', title="Store Home", products=products, brands=get_all_brands(), categories=get_all_categories())
+    user_id = session.get('_user_id')
+    balance = 0
+    if user_id:
+        balance = get_balance(RegisterModel.query.get(user_id).wallet)
+        session['balance'] = balance
+    return render_template('products/index.html', title="Store Home", products=products, brands=get_all_brands(), categories=get_all_categories(),prc_balance=balance)
 
 @app.route('/product/<int:id>')
 def product_details(id):

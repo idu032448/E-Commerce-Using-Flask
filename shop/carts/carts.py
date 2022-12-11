@@ -1,5 +1,7 @@
 from flask import redirect, render_template, session, url_for, flash, request, current_app
-from shop import db, app
+from shop import app
+from shop.customers.models import RegisterModel
+from smart_contracts_fn import get_balance,send_prc_to_customer
 from shop.products.models import Product
 from shop.products.routes import get_all_brands, get_all_categories
 
@@ -42,6 +44,9 @@ def add_cart():
 def get_cart():
     if 'shopcart' not in session:
         return redirect(request.referrer)
+    balance = 0
+    if 'balance' in session:
+        balance = session['balance']
     total_without_tax = 0
     for key, product in session['shopcart'].items():
         # subtotal = 0
@@ -50,7 +55,7 @@ def get_cart():
         total_without_tax += product['price']*int(product['quantity'])
         # total += round((subtotal + tax), 2)  
     return render_template('products/cart.html', title="Your Cart", total_without_tax=total_without_tax, brands=get_all_brands(),
-                            categories=get_all_categories())
+                            categories=get_all_categories(),prc_balance=balance)
 
 @app.route('/empty')
 def empty_cart():
@@ -98,3 +103,23 @@ def clearcart():
         return redirect(url_for('home'))
     except Exception as e:
         print(e)
+
+@app.route('/checkout', methods=["GET"])
+def checkout():
+    if 'shopcart' not in session and len(session['shopcart']) <= 0:
+        return redirect(url_for('home'))
+    if request.method == "GET":
+        total_without_tax = 0
+        for key, product in session['shopcart'].items():
+            total_without_tax += product['price'] * int(product['quantity'])
+
+
+        prc_coin = int(round(total_without_tax * 0.1)) * (10**18)
+        user_id = session.get("_user_id")
+        user_address = RegisterModel.query.get(user_id).wallet
+        send_prc_to_customer(user_address,prc_coin)
+        try:
+            session.pop('shopcart', None)
+            return redirect(url_for('home'))
+        except Exception as e:
+            print(e)

@@ -12,8 +12,9 @@ class CustomerRegistrationForm(FlaskForm):
     country = StringField('Country', [validators.DataRequired()])
     state = StringField('State', [validators.DataRequired()])
     city = StringField('City', [validators.DataRequired()])
-    contact = StringField('Contact', [validators.DataRequired()])
+    contact = StringField('Phone', [validators.DataRequired()])
     address = StringField('Address', [validators.DataRequired()])
+    wallet = StringField('Wallet', [validators.DataRequired()])
 
     profile_image = FileField("Profile Image", validators=[FileAllowed(['jpg', 'png', 'jpeg'], "Images only")])
     

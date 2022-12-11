@@ -1,0 +1,12 @@
+flask
+Flask-SQLAlchemy
+Flask-Bcrypt
+jd-flask-uploads
+Flask-Login
+Flask-Migrate
+Flask-WTF
+email_validator
+web3
+eth-brownie
+python-dotenv
+websockets==10.4

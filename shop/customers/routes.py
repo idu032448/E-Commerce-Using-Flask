@@ -14,7 +14,7 @@ def register_customer():
         hash_password = bcrypt.generate_password_hash(form.password.data)
         register = RegisterModel(name=form.name.data, username=form.username.data, email=form.email.data,
                 password=hash_password, country=form.country.data, state=form.state.data,city=form.city.data,
-                address=form.address.data, contact=form.contact.data)
+                address=form.address.data, contact=form.contact.data, wallet=form.wallet.data)
         db.session.add(register)
         db.session.commit()
         flash(f"Welcome:{form.name.data} Thank Your for Registering", 'success')

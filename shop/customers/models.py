@@ -16,6 +16,7 @@ class RegisterModel(db.Model, UserMixin):
     state = db.Column(db.String(50), unique=False)
     city = db.Column(db.String(50), unique=False)
     address = db.Column(db.String(256), unique=False)
+    wallet = db.Column(db.String(256),nullable=False, unique=True)
     contact = db.Column(db.String(16), unique=False)
     profile_image = db.Column(db.String(128), unique=False, default='profile.jpg')
     date_created = db.Column(db.DateTime, nullable=False, default=datetime.now())

@@ -8,5 +8,4 @@ class AddProducts(Form):
     desc = TextAreaField("Description", [validators.DataRequired()])
     # colors = TextAreaField("Colors", [validators.DataRequired()])
 
-    image_1 = FileField('Image 1', validators=[FileAllowed(['jpg, jpeg, png, svg, gif']), 
-                        "Images Only please"])
+    image_1 = FileField('Image 1')
