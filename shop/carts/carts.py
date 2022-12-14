@@ -104,16 +104,16 @@ def clearcart():
     except Exception as e:
         print(e)
 
-@app.route('/checkout', methods=["GET"])
+@app.route('/cart', methods=["POST"])
 def checkout():
     if 'shopcart' not in session and len(session['shopcart']) <= 0:
         return redirect(url_for('home'))
-    if request.method == "GET":
+    if request.method == "POST":
         total_without_tax = 0
         for key, product in session['shopcart'].items():
             total_without_tax += product['price'] * int(product['quantity'])
 
-
+        total_without_tax = int(request.form.get('total_cart_hide'))
         prc_coin = int(round(total_without_tax * 0.1)) * (10**18)
         user_id = session.get("_user_id")
         user_address = RegisterModel.query.get(user_id).wallet

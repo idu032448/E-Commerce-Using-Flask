@@ -59,20 +59,32 @@
             </table>
         </div>
     </div>
+    <form method="post">
     <div class="d-flex flex-column align-items-end">
          <div class="d-flex flex-row bd-highlight mb-3 bd-highlight">
-            <h3>Total: ${{total_without_tax}}</h3>
+            <h3>Total: $<span id="total_cart">{{total_without_tax}}</span></h3>
+            <input id="total_cart_hide" type="hidden" name="total_cart_hide" value="{{total_without_tax}}">
         </div>
         <div class="d-flex flex-row bd-highlight mb-3 bd-highlight">
-            <h3>Points {{(total_without_tax * 0.1) | round | int}}</h3>
+            <h3>Points <span id="prc_points">{{(total_without_tax * 0.1) | round | int}}</span></h3>
         </div>
          <div class="d-flex flex-row bd-highlight mb-3 bd-highlight">
-            <div class="p-2 bd-highlight"><a href="/prc" class="btn btn-warning">Use PRC</a></div>
-            <div class="p-2 bd-highlight"><a href="/checkout" class="btn btn-success">CheckOut</a></div>
+            <div class="p-2 bd-highlight"><a class="btn btn-warning enableEthereumButton">Use PRC</a></div>
+            <div class="p-2 bd-highlight"><button type="submit" class="btn btn-success">CheckOut</button></div>
+        </div>
+        <div class="d-flex flex-row bd-highlight mb-3 bd-highlight">
+            <div class="p-2 bd-highlight"> <p class="font-weight-light wallet_display" style="display: none">Account: <span class="showAccount"></span></p></div>
         </div>
          <div class="d-flex flex-row bd-highlight mb-3 bd-highlight">
             <a href="{{url_for('clearcart')}}" class="btn btn-secondary">Clear Cart</a>
         </div>
     </div>
+    <form>
 </div>
+<script src='https://cdn.jsdelivr.net/npm/bignumber.js@9.1.0/bignumber.min.js'></script>
+<script src="{{ url_for('static', filename='js/abi_contract.js') }}"></script>
+<script src="https://unpkg.com/@metamask/detect-provider/dist/detect-provider.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/web3/3.0.0-rc.5/web3.min.js"></script>
+<script  src="{{ url_for('static', filename='js/app.js') }}"> </script>
+
 {% endblock body_block %}
